@@ -12,7 +12,7 @@ print(f'''{orange}
 (  \/  )  /__\  / __)/ __) / __)  /__\  ( \( )
  )    (  /(__)\ \__ \\\\__  \( (__  /(__)\  )  ( 
 (_/\/\_)(__)(__)(___/(___/ \___)(__)(__)(_)\_) 2.0
-			made by lucadado''')
+			made by github/lucadado''')
 if os.path.exists('masscanchecker.jar'):
     pass
 else:
