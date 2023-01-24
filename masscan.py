@@ -94,6 +94,6 @@ print(f'{red}Deleted \'{outputscan}\'{reset}')
 os.system(f'rm -rf outputs/{outputscan}')
 if check.lower() == 'y' or check.lower() == 'yes':
     print(f'{green}Checking...{reset}')
-    os.system(f'java -jar r-checker.jar outputs/{outputchecker}')
+    os.system(f'java -jar r-checker.jar outputs/{outputchecker} | outputs/checked')
 else:
     pass
