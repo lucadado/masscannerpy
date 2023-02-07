@@ -87,7 +87,7 @@ else:
 	print(f'{orange}Port Range: {darkorange}{ports}')
 	command = f'masscan -p{ports} {ip} --max-rate {rate} -oL outputs/{outputscan}'
 	os.system(command)
-os.system(f'java -jar masscanchecker.jar {outputscan} 10 | tee outputs/{outputchecker}')
+os.system(f'java -jar masscanchecker.jar outputs/{outputscan} 10 | tee outputs/{outputchecker}')
 num_lines = sum(1 for line in open(f'outputs/{outputchecker}'))
 print(f'{orange}Server found: {darkorange}{num_lines}')
 print(f'{red}Deleted \'{outputscan}\'{reset}')
