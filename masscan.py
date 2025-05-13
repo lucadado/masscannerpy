@@ -1,13 +1,14 @@
 import os
 import argparse
 from colored import fg, bg, attr
+import subprocess
 
 reset = attr(0)
 darkorange = fg(209)
 orange = fg(208)
 red = fg(9)
 green = fg(46)
-os.system('clear')
+subprocess.run(["clear"])
 parser = argparse.ArgumentParser(
                     prog = 'python3 masscan.py',
                     description = 'a scanner that finds server minecraft.')
@@ -26,16 +27,16 @@ print(f'''{red}
  __  __    __    ___  ___   ___    __    _  _ {red}
 (  \/  )  /__\  / __)/ __) / __)  /__\  ( \( )
 {orange} )    (  /(__)\ \__ \\\\__ \( (__  /(__)\  )  ( 
-{red}(_/\/\_)(__)(__)(___/(___/ \___)(__)(__)(_)\_) 3.0
+{red}(_/\/\_)(__)(__)(___/(___/ \___)(__)(__)(_)\_) 3.1
 		   {orange}made by github/lucadado{reset}''')
 if not(os.path.exists('masscanchecker.jar')):
     print(f'{red}masscanchecker.jar doesn\'t exist!')
     print(f'{green}Downloading masscanchecker.jar{reset}')
-    os.system('wget https://github.com/lucadado/masscanchecker/raw/main/masscanchecker.jar')
+    subprocess.run(["wget", "https://github.com/lucadado/masscanchecker/raw/main/masscanchecker.jar"])
 if not(os.path.exists('r-checker.jar')):
     print(f'{red}r-checker.jar doesn\'t exist!')
     print(f'{green}Downloading r-checker.jar{reset}')
-    os.system('wget https://github.com/lucadado/r-checker/raw/main/r-checker.jar')
+    subprocess.run(["wget", "https://github.com/lucadado/r-checker/raw/main/r-checker.jar"])
 if not(os.path.exists('outputs/')):
     os.mkdir('outputs')  
 if ports == 'Spooky':
@@ -53,7 +54,13 @@ if file and range:
     parser.print_help()
     exit()
 if file:
-	os.system(f'masscan -p{ports} -iL {file} --wait 0 --max-rate {rate} -oL outputs/scan')
+	subprocess.run([
+    "masscan",
+    f"-p{ports}",
+    "-iL", file,
+    "--wait", "0",
+    "--max-rate", str(rate),
+    "-oL", "outputs/scan"])
 	choose = file
 else:
 	if range == None:
@@ -64,21 +71,34 @@ else:
 			range = range.replace('*.*', '0.0/16')
 		if range.find('*'):
 			range = range.replace('*', '0/24')
-		os.system(f'masscan -p{ports} {range} --wait 0 --max-rate {rate} -oL outputs/scan')
+		subprocess.run([
+			"masscan",
+			f"-p{ports}",
+			range,                     # <-- senza apici, già è una variabile
+			"--wait", "0",
+			"--max-rate", str(rate),
+			"-oL", "outputs/scan"
+		])
 		if "/" in range:
 			range = range.replace("/","_")
 		elif "-" in range:
 			range = range.replace("-","_")
 		choose = range[0:14]
-os.system(f'java -jar masscanchecker.jar outputs/scan 100 | tee outputs/{choose}')
+subprocess.run(
+    f'java -jar masscanchecker.jar outputs/scan 100 | tee outputs/{choose}',
+    shell=True
+)
 num_lines = sum(1 for line in open(f'outputs/{choose}'))
 num_lines = num_lines - 6
 print(f'{orange}Server found: {darkorange}{num_lines}')
 print(f'Saved on outputs/{choose}')
 print(f'{red}Deleted \'scan\'{reset}')
-os.system(f'rm -rf outputs/scan')
+subprocess.run(["rm", "-rf", "outputs/scan"])
 if check:
 	print(f'{green}Checking...{reset}')
-	os.system(f'java -jar r-checker.jar outputs/{choose} | tee outputs/{choose}-checked')
+	subprocess.run(
+    f'java -jar r-checker.jar outputs/{choose} | tee outputs/{choose}-checked',
+    shell=True
+)
 	print(f'Saved on outputs/{choose}-checked')
 	print(f'{orange}Server found: {darkorange}{num_lines}')
