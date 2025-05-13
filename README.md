@@ -13,7 +13,7 @@ apt install python3
 ```
 git clone https://github.com/lucadado/masscannerpy.git
 cd masscannerpy
-python3 
+pip install -r requirements.txt
 python3 masscan.py
 ```
 
