@@ -1,5 +1,5 @@
 # masscannerpy
-A Masscanner script made in python for scan server minecraft
+A Masscan script made in python for scan server minecraft
 
 # Requirements
 - Masscan
